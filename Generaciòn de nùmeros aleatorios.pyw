@@ -1,10 +1,14 @@
 from cProfile import label
 from cgitb import text
+from msvcrt import kbhit
 from textwrap import fill
+from this import d
 from tkinter import *
 import tkinter
 from turtle import right, width
 from tkinter import ttk
+import pandas as pd
+import os
 
 raiz=Tk()
 
@@ -27,10 +31,11 @@ Label(frame, text="Semilla", padx=50).grid(row=0, column=1)
 Entry(frame, textvariable=semilla).grid(row=1, column=1)
 Label(frame, text="Variable Multiplicativa", padx=50).grid(row=0, column=2)
 Entry(frame, textvariable=multiplo).grid(row=1, column=2)
-Label(frame, text="Variable Aditiva", padx=50).grid(row=0, column=3)
-Entry(frame, textvariable=sumando).grid(row=1, column=3)
-Label(frame, text="Modulo", padx=50).grid(row=0, column=4)
-Entry(frame, textvariable=modulo).grid(row=1, column=4)
+Label(frame, text="Variable Aditiva", padx=50).grid(row=0, column=4)
+Entry(frame, textvariable=sumando).grid(row=1, column=4)
+Label(frame, text="Modulo", padx=50).grid(row=0, column=5)
+Entry(frame, textvariable=modulo).grid(row=1, column=5)
+
 
 def GenerarNumerosMixta():
 
@@ -40,36 +45,38 @@ def GenerarNumerosMixta():
     m = int(modulo.get())
 
     if()
-    
-    raiz2=Tk()
 
-    raiz2.title("Numeros generados")
-
-    frame2=Frame(raiz2)
-
-    frame2.pack()
-
-    Label(frame2, text="X", padx=50).grid(row=0, column=1)
-    Label(frame2, text="A", padx=50).grid(row=0, column=2)
-    Label(frame2, text="C", padx=50).grid(row=0, column=3)
-    Label(frame2, text="M", padx=50).grid(row=0, column=4)
-    Label(frame2, text=x, padx=50).grid(row=1, column=1)
-    Label(frame2, text=ai, padx=50).grid(row=1, column=2)
-    Label(frame2, text=c, padx=50).grid(row=1, column=3)
-    Label(frame2, text=m, padx=50).grid(row=1, column=4)
+    h = [x]  
+    j = [ai] 
+    k = [c] 
+    l = [m] 
+    w = [0]
 
     for b in range(1, m+1):
-
-        Label(frame2, text=b, padx=50).grid(row=b+1, column=0)
-        
 
         a = ((ai*x) + c)
         x = a%m
 
-        Label(frame2, text=x, padx=50).grid(row=b+1, column=1)
-        Label(frame2, text=a, padx=50).grid(row=b+1, column=2)
+        h.append(x)
+        j.append(a)
+        k.append(" ")
+        l.append(" ")
+        w.append(x/m)
+
+
+    d = {'X':h, 'A':j, 'C':k, 'M':l, 'Numeros aleatorios':w}
+
+    df = pd.DataFrame(data=d)
+    df.to_excel('numeros.xlsx')
+    os.startfile("numeros.xlsx")
     
-botonGenerar=Button(frame, text="Generar", command=lambda:GenerarNumerosMixta()).grid(row = 3, column=2)
+    
+
+    
+botonGenerar=Button(frame, text="Generar", command=lambda:GenerarNumerosMixta()).grid(row = 4, column=3)
+
+Checkbutton(frame, text="Validar Datos").grid(row=3, column=2)
+Checkbutton(frame, text="No Validar Datos").grid(row=3, column=4)
 
 frame3=Frame(pestanas)
 
@@ -92,41 +99,35 @@ def GenerarNumerosMultiplicativa():
     ai2 = int(multiplo2.get())
     m2 = int(modulo2.get())
 
-
-    raiz2=Tk()
-
-    raiz2.title("Numeros generados")
-
-    frame2=Frame(raiz2)
-
-    frame2.pack()
-
-    Label(frame2, text="X", padx=50).grid(row=0, column=1)
-    Label(frame2, text="A", padx=50).grid(row=0, column=2)
-    Label(frame2, text="M", padx=50).grid(row=0, column=4)
-    Label(frame2, text=x2, padx=50).grid(row=1, column=1)
-    Label(frame2, text=ai2, padx=50).grid(row=1, column=2)
-    Label(frame2, text=m2, padx=50).grid(row=1, column=4)
+    h = [x2]  
+    j = [ai2] 
+    l = [m2] 
+    w = [0]
 
     for b in range(1, m2+1):
-
-        Label(frame2, text=b, padx=50).grid(row=b+1, column=0)
-        
 
         a = ((ai2*x2))
         x2 = a%m2
 
-        Label(frame2, text=x2, padx=50).grid(row=b+1, column=1)
-        Label(frame2, text=a, padx=50).grid(row=b+1, column=2)
+        h.append(x2)
+        j.append(a)
+        l.append(" ")
+        w.append(x2/m2)
+
+
+    d = {'X':h, 'A':j, 'M':l, 'Numeros aleatorios':w}
+
+    df = pd.DataFrame(data=d)
+    df.to_excel('numeros.xlsx')
+    os.startfile("numeros.xlsx")
     
 
-botonGenerar=Button(frame3, text="Generar", command=lambda:GenerarNumerosMultiplicativa()).grid(row= 3 , column=2)
+botonGenerar=Button(frame3, text="Generar", command=lambda:GenerarNumerosMultiplicativa()).grid(row= 4 , column=3)
+
+Checkbutton(frame3, text="Validar Datos").grid(row=3, column=2)
+Checkbutton(frame3, text="No Validar Datos").grid(row=3, column=4)
 
 pestanas.add(frame, text="Formula Congruencial Mixta")
 pestanas.add(frame3, text="Formula Congruencial Multiplicativa")
 
 raiz.mainloop()
-
-
-
-
